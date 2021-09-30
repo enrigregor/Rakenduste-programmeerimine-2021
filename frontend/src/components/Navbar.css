@@ -1,0 +1,11 @@
+.navbar {
+    background-color: crimson;
+    height: 150px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cart {
+    height: 50px;
+    margin: 50px;
+}

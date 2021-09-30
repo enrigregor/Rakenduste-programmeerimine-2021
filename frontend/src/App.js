@@ -1,22 +1,27 @@
-import { Route } from 'react-router-dom';
 import './App.css';
-import AddItem from './pages/Additem';
+import {Route} from 'react-router-dom';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
+import Navbar from './components/Navbar';
+import AddItem from './pages/AddItem';
+import AddCategory from "./pages/AddCategory";
 
 function App() {
   return (
     <div>
+      <Navbar />
       <Route path='/' exact>
         <Home />
       </Route>
-      <Route path='/Cart'>
+      <Route path='/cart'>
         <Cart />
       </Route>
-      <Route path='/AddItem'>
-        <AddItem />
-      </Route>
-
+        <Route path='/add-item'>
+            <AddItem />
+        </Route>
+        <Route path='/add-category'>
+            <AddCategory />
+        </Route>
     </div>
   );
 }
