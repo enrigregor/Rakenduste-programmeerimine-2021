@@ -22,11 +22,19 @@ exports.createItem = async (req, res) => {
 }
 
 exports.updateItem = async (req, res) => {
+  const { id } = req.params;
+  const item = await Item.findOne({_id: id})
 
+  item.quality = item.quality + 1;
+  const savedItem = item.save()
+
+  res.status(200).send("done")
 }
 
 exports.deleteItem = async (req, res) => {
+  console.log(req.params)
   const { id } = req.params;
+  
 
   const item = await Item.findOneAndDelete({ _id: id })
 

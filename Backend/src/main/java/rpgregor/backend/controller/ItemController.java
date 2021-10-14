@@ -20,9 +20,24 @@ public class ItemController {
     }
 
     @PostMapping("items")
-    public String postItems(@RequestBody Item item){
+    public void postItems(@RequestBody Item item) {
         itemService.saveItem(item);
-        return "Ese edukalt lisatud!! " + item.getName();
+    }
+
+    @DeleteMapping("delete-item/{id}")
+    public List<Item> deleteItem(@PathVariable Long id) {
+        itemService.deleteItem(id);
+        return itemService.getItem();
+    }
+
+    @PostMapping("edit-item")
+    public void editItem(@RequestBody Item item){
+        itemService.editItem(item);
+    }
+
+    @GetMapping("view-item/{id}")
+    public Item getOneItem(@PathVariable Long id) throws Exception {
+        itemService.getOneItem(id);
     }
 
     //kodutöö: kõik tehtud asjad ka categoryga5
