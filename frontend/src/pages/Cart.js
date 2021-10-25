@@ -1,7 +1,9 @@
 function Cart() {
     return (
-        <div>
-            Ostukorv olen!
+        
+        <div className="ShoppingCart">
+            <h1>Olen Ostukorv</h1>
+            Ostukorvi sisu!
         </div>
     )
 }

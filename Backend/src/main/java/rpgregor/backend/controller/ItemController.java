@@ -1,5 +1,6 @@
 package rpgregor.backend.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import rpgregor.backend.model.Item;
@@ -29,7 +30,7 @@ public class ItemController {
         itemService.deleteItem(id);
         return itemService.getItem();
     }
-
+    @ApiOperation("API otsepunktiga, tuleb kaasa anda ID")
     @PostMapping("edit-item")
     public void editItem(@RequestBody Item item){
         itemService.editItem(item);
@@ -37,7 +38,7 @@ public class ItemController {
 
     @GetMapping("view-item/{id}")
     public Item getOneItem(@PathVariable Long id) throws Exception {
-        itemService.getOneItem(id);
+        return itemService.getOneItem(id);
     }
 
     //kodutöö: kõik tehtud asjad ka categoryga5

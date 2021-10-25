@@ -10,6 +10,9 @@ function Navbar(){
             <Link to="/cart">
                 <img className="cart" src="shopping-cart.svg" alt=""/>
             </Link>
+            <Link to="/admin">
+                <button>Admini vaatesse</button>
+            </Link>
         </div>
     );
 

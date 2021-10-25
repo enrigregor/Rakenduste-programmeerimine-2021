@@ -1,11 +1,16 @@
 .navbar {
-    background-color: crimson;
+    background-color: rgb(204, 204, 204);
     height: 150px;
     display: flex;
     justify-content: space-between;
 }
 
 .cart {
+    align-content: right;
     height: 50px;
+    margin: 50px;
+}
+.cart:hover{
+    height: 60px;
     margin: 50px;
 }
