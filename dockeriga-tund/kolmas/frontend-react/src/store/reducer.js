@@ -22,7 +22,8 @@ const postReducer = (state, action) => {
     case POSTS_UPDATE: 
         return {
           ...state,
-          data: action.payload
+          data: state.data.assign(state.data.title, action.payload.title)
+          //data: action.payload.filter(state.data => state.data.id, ).assing(state.data, state.data.title)
         }
     default:
       return state
@@ -36,13 +37,16 @@ const authReducer = (state, action) => {
         ...state,
         token: action.payload.token,
         email: action.payload.email,
-        user: action.payload.user
+        firstName: action.payload.firstName,
+        lastName: action.payload.lastName
       }
     case USER_LOGOUT:
       return {
         ...state,
         token: null,
-        user: null
+        email: null,
+        firstName: null,
+        lastName: null
       }
     default:
       return state

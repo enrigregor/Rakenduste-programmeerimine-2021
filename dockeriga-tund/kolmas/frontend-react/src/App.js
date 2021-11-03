@@ -7,6 +7,7 @@ import PageHeader from "./components/PageHeader";
 import { Link } from "react-router-dom";
 import { Button, DatePicker } from 'antd';
 import { Layout } from "antd";
+import EditPost from "./components/EditPost";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -22,6 +23,7 @@ function App() {
               <Route exact path="/posts" component={Posts} />
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/signup" component={SignupPage} />
+              <Route exact path="/editpost" component={EditPost} />
               <DatePicker />
             </Switch>
         </Content>

@@ -23,8 +23,8 @@ function LoginPage() {
                     return response.json();
                 }).then(data => {
                     dispatch(loginUser(data))
-                }).catch(error => {
-                    console.error("Login error: ", error);
+                }).catch((error) => {
+                    console.log("Login error: ", error);
                 })
             );
         }
@@ -33,7 +33,7 @@ function LoginPage() {
         const onFinish = (values) => {
             startLogin(values);
             //console.log("parool:", values.password);
-            console.log('Success:');
+            console.log('Andmed õigel kujul');
         };
     
         const onFinishFailed = (errorInfo) => {
@@ -67,6 +67,10 @@ function LoginPage() {
                 label="Email"
                 name="email"
                 rules={[
+                {
+                    type: 'email',
+                    message: 'The input is not valid E-mail!',
+                },
                 {
                     required: true,
                     message: 'Please input your email!',

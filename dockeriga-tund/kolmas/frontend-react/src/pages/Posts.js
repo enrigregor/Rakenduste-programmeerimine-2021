@@ -1,7 +1,10 @@
 import { useContext, useState, useRef, useEffect, useImperativeHandle } from "react";
 import { Context } from "../store";
+import { Link } from "react-router-dom";
 import { addPost, emptyPost, removePost, updatePosts } from "../store/actions";
-import { Table, Space } from "antd";
+import { Table, Space, Button } from "antd";
+import { Content } from "antd/lib/layout/layout";
+
 
 function Posts() {
   const [title, setTitle] = useState("");
@@ -33,8 +36,10 @@ function Posts() {
         setData(data)
       });
     }, [])
-  console.log(state);
-  console.log(data);
+    console.log("--------------");
+    console.log(state);
+  console.log("--------------");
+  console.log("olen data",data.posts);
 
 
   let rows;   
@@ -52,6 +57,15 @@ function Posts() {
     } else {     
       rows = []   
     };
+
+    function EditPostTEST(id) {
+      //console.log("MINA OLEN POSTITUSE ID: ", id);
+      
+    }
+
+    function DeletePost(id) {
+      console.log("MINA OLEN POSTITUSE ID DELETES: ", id);
+    }
 
   const columns = [
     {
@@ -79,15 +93,14 @@ function Posts() {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <a>Edit {record.name}</a>
-          <a>Delete</a>
+          <Button><Link to ="/editpost" onClick ={EditPostTEST}>Edit</Link></Button>
         </Space>
       ),
-    },
+    },  
   ];
 
   
-
+//<a onClick ={() => EditPostTEST(record.id)}>Edit</a>
   // Või võite panna eraldi nupu, et "Get latest from database" (Sync)
 
   const handleSubmit = (e) => {
@@ -103,16 +116,30 @@ function Posts() {
 
   const addNewPost = () => {
     const newPost = {
-      firstName: "test",
-      lastName: "test",
-      title,
+      firstName: state.auth.firstName,
+      lastName: state.auth.lastName,
+      title: title,
+      email: state.auth.email,
       id: Date.now(),
     };
 
     // Salvestame andmebaasi ja kui on edukas, 
     // siis teeme dispatchi ja uuendame state lokaalselt
-
-    dispatch(addPost(newPost));
+    if(state.auth.email != undefined && state.auth.email != null && title != "" && title != null ){
+      fetch("http://localhost:8081/api/post/create", {
+        method: "POST",
+        body: JSON.stringify(newPost),
+        headers: {"Content-Type":"application/json"}
+      }).then(response => {
+        console.log(response);
+      }).catch((error) => {
+        console.log(error);
+      });
+      dispatch(addPost(newPost));
+    } else {
+      //console.log("Postitusel puudub sisu või pole sisselogitud.")
+    }
+    
   };
 
   console.log({ inputRef });
@@ -120,7 +147,7 @@ function Posts() {
   return (
     <div style={{ textAlign: "center" }}>
       <h1>Posts</h1>
-      <Table dataSource={rows} columns={columns} />;
+      <Table dataSource={rows} columns={columns} />
       <form onSubmit={handleSubmit}>
         <input
           ref={inputRef}
@@ -139,7 +166,7 @@ function Posts() {
             style={{ cursor: "pointer" }}
             onClick={() => dispatch(removePost(e.id))}
           >
-            &#128540;
+             --|DELETE|;
           </span>
         </li>
       ))}
