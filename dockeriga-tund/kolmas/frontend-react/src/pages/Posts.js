@@ -1,9 +1,8 @@
-import { useContext, useState, useRef, useEffect, useImperativeHandle } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { Context } from "../store";
 import { Link } from "react-router-dom";
-import { addPost, emptyPost, removePost, updatePosts } from "../store/actions";
+import { addPost, emptyPost } from "../store/actions";
 import { Table, Space, Button } from "antd";
-import { Content } from "antd/lib/layout/layout";
 
 
 function Posts() {
@@ -36,10 +35,7 @@ function Posts() {
         setData(data)
       });
     }, [])
-    console.log("--------------");
-    console.log(state);
-  console.log("--------------");
-  console.log("olen data",data.posts);
+
 
 
   let rows;   
@@ -58,14 +54,21 @@ function Posts() {
       rows = []   
     };
 
-    function EditPostTEST(id) {
-      //console.log("MINA OLEN POSTITUSE ID: ", id);
+    function ShowEdit(){
+      if(state.auth.email != undefined && state.auth.email != null){
+        return (
+        <Space size="middle">
+          <Button><Link to ="/editpost" >Manage(edit) your posts</Link></Button>
+        </Space>
+      )
+      } else {
+          return (
+            <h3>Login to edit your posts</h3>
+          )
+      }
       
     }
 
-    function DeletePost(id) {
-      console.log("MINA OLEN POSTITUSE ID DELETES: ", id);
-    }
 
   const columns = [
     {
@@ -87,15 +90,6 @@ function Posts() {
       title: 'PostID',
       dataIndex: 'id',
       key: 'id',
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (text, record) => (
-        <Space size="middle">
-          <Button><Link to ="/editpost" onClick ={EditPostTEST}>Edit</Link></Button>
-        </Space>
-      ),
     },  
   ];
 
@@ -131,24 +125,28 @@ function Posts() {
         body: JSON.stringify(newPost),
         headers: {"Content-Type":"application/json"}
       }).then(response => {
-        console.log(response);
+        console.log("Success");
       }).catch((error) => {
         console.log(error);
       });
       dispatch(addPost(newPost));
     } else {
+      throw new Error("Postitusel puudub sisu või pole sisselogitud");
       //console.log("Postitusel puudub sisu või pole sisselogitud.")
     }
     
   };
 
-  console.log({ inputRef });
 //<Table dataSource={rows} columns={columns} />;
   return (
     <div style={{ textAlign: "center" }}>
       <h1>Posts</h1>
       <Table dataSource={rows} columns={columns} />
+      {ShowEdit()}
+        <hr></hr>
+        <br></br>
       <form onSubmit={handleSubmit}>
+        <h2>Add new post</h2>
         <input
           ref={inputRef}
           type="text"
@@ -158,18 +156,9 @@ function Posts() {
         />
         <button type="submit">Submit</button>
       </form>
+      <br></br>
 
-      {state.posts.data.map((e) => (
-        <li key={e.id}>
-          {e.id} {e.title}
-          <span
-            style={{ cursor: "pointer" }}
-            onClick={() => dispatch(removePost(e.id))}
-          >
-             --|DELETE|;
-          </span>
-        </li>
-      ))}
+      <hr></hr>
     </div>
   );
 }

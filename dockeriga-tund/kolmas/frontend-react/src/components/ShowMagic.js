@@ -16,20 +16,6 @@ function ShowMagic() {
         show={show}
         setShow={setShow}
       />
-      <Fun 
-        magicNumber={magicNumber} 
-        setMagicNumber={setMagicNumber} 
-        amount={5}
-        show={show}
-        setShow={setShow}
-      />
-      <Fun 
-        magicNumber={magicNumber} 
-        setMagicNumber={setMagicNumber} 
-        amount={25}
-        show={show}
-        setShow={setShow}
-      />
       <Greeting name="Enri" age="20"/>
     </div>
   );

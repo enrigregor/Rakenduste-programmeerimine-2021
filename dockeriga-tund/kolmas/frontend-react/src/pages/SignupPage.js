@@ -1,16 +1,16 @@
-import { React, useContext, useState, useRef, useEffect, useImperativeHandle } from "react";
+import { React, useContext, useState } from "react";
 import { Context } from "../store";
-import { loginUser, logoutUser } from "../store/actions";
+import { loginUser } from "../store/actions";
 import { Content } from "antd/lib/layout/layout";
 import {
   Form,
   Input,
-  Select,
   Button,
 } from 'antd';
 
 function SignupPage() {
     const [state, dispatch] = useContext(Context);
+    let error;
 
     function startSignup(values) {
         console.log("Values info väärtus: ", values);
@@ -27,14 +27,22 @@ function SignupPage() {
                     body: JSON.stringify(userData),
                     headers: {"Content-Type":"application/json"}
                 }).then(response => {
+                    if(response.ok){
+                        console.log("Success!")
+                    } else {
+                        throw new Error("Signup failed.")
+                    }
                     return response.json();
+                    
                 }).then(data => {
                     dispatch(loginUser(data))
                 }).catch(error => {
                     console.error("Signup error: ", error);
                 })
+                
             );
     }
+
 
     const formItemLayout = {
     labelCol: {
@@ -69,6 +77,7 @@ function SignupPage() {
 
     const [form] = Form.useForm();
 
+    //kahekordne parooli kontroll on formis sees
     const onFinish = (values) => {
         startSignup(values)
         console.log('Received values of form: ', values);
@@ -176,6 +185,7 @@ function SignupPage() {
     
             </Form>
         );
+
     }
 
     

@@ -24,23 +24,23 @@ router.post(
     check("firstName")
       .isLength({ min: 3 })
       .withMessage("Must be at least 3 characters long")
-      .trim()
       .exists()
       .matches(/^[A-ZÕÄÖÜa-zõäöü]+$/)
       .withMessage("Must be alphabetic"),
     check("lastName")
       .isLength({ min: 3 })
       .withMessage("Must be at least 3 characters long")
-      .trim()
       .exists()
       .matches(/^[A-ZÕÄÖÜa-zõäöü]+$/)
       .withMessage("Must be alphabetic"),
+      //trim pole vaja kui .matches on olemas
     check("email")
       .isEmail()
       .normalizeEmail()
       .withMessage("Must be correctly formatted e-mail"),
     check("password")
       .isLength({ min: 6 })
+      //escape() meetod lõhkus saatmise ära ning googles ütles et reactis peaks see sees olema automaatselt(kui ma postitusest õigesti aru sain)
       .withMessage("Must be at least 6 characters long"),
   ],
   validationMiddleware,

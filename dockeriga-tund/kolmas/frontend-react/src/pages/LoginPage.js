@@ -1,10 +1,13 @@
-import { useContext, useState, useRef, useEffect, useImperativeHandle } from "react";
-import { Form, Input, Button} from 'antd';
+import { useContext } from "react";
+import { Form, Input, Button, Alert} from 'antd';
 import { Context } from "../store";
-import { loginUser, logoutUser } from "../store/actions";
+import { Link } from "react-router-dom";
+import { loginUser } from "../store/actions";
 import { Content } from "antd/lib/layout/layout";
 function LoginPage() {
     const [state, dispatch] = useContext(Context);
+    let errorLogin;
+    let checkLog = "";
 
        function startLogin(values) {
            console.log("Values info väärtus: ", values);
@@ -13,6 +16,7 @@ function LoginPage() {
                 email: values.email,
                 password: values.password,
             };
+            
 
             return(
                 fetch("http://localhost:8081/api/auth/login", {
@@ -23,21 +27,33 @@ function LoginPage() {
                     return response.json();
                 }).then(data => {
                     dispatch(loginUser(data))
+                    checkLog = "done";
+                    CheckAlert();
                 }).catch((error) => {
                     console.log("Login error: ", error);
+                    checkLog = "done";
+                    CheckAlert();
                 })
             );
+
         }
-        console.log(state);
 
         const onFinish = (values) => {
             startLogin(values);
-            //console.log("parool:", values.password);
-            console.log('Andmed õigel kujul');
         };
+
+        function CheckAlert() {
+               if((state.auth.email == undefined || state.auth.email == null) && checkLog == "done"){
+                   errorLogin = <Alert message="Failed to login!" type="error" />
+                } 
+            return errorLogin
+            
+        }
     
         const onFinishFailed = (errorInfo) => {
             console.log('Failed:', errorInfo);
+            CheckAlert();
+
         };
         if(state.auth.email != undefined){
             return (
@@ -48,6 +64,8 @@ function LoginPage() {
             )
         } else {
             return (
+                <Content>
+                <Button><Link to ="/signup">Sign up  </Link></Button>
             <Form
             name="basic"
             labelCol={{
@@ -63,6 +81,7 @@ function LoginPage() {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             >
+            {CheckAlert()}
             <Form.Item
                 label="Email"
                 name="email"
@@ -104,6 +123,7 @@ function LoginPage() {
                 </Button>
             </Form.Item>
             </Form>
+            </Content>
         );
         };
         

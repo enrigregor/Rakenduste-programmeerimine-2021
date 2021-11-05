@@ -1,14 +1,13 @@
-import { useContext, useState, useRef, useEffect, useImperativeHandle } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { Context } from "../store";
 import { addPost, emptyPost, removePost, updatePosts } from "../store/actions";
 import { Table, Space, Form, Input, Button, Select } from "antd";
 import { Content } from "antd/lib/layout/layout";
 
 function EditPost() {
-    const [title, setTitle] = useState("");
     const [state, dispatch] = useContext(Context);
     const [userPostData, setUserPostData] = useState("");
-    const inputRef = useRef(null);
+
 
     useEffect(() => {
         if(state.auth.email != undefined && state.auth.email != null) {
@@ -43,8 +42,12 @@ function EditPost() {
             title: values.postTitle,
         }
         const updatedPost = {
+            firstName: state.auth.firstName,
+            lastName: state.auth.lastName,
+            email: state.auth.email,
             id: values.postId,
             title: values.postTitle
+            
         }
 
         //if(userPostData.email == state.auth.email){
@@ -54,10 +57,15 @@ function EditPost() {
                 headers: {"Content-Type":"application/json"}
             }).then(response => {
                 console.log(response);
+                if(response.ok){
+                  console.log("Success")
+                } else {
+                  throw new Error("Failed at updating the post.")
+                }
             }).catch((error) => {
                 console.log(error);
             })
-            //dispatch(updatePosts(updatedPost))
+            dispatch(updatePosts(updatedPost))
         /*} else {
             if(state.auth.email != undefined && state.auth.email != null) {
                 console.log("That post is not yours!");

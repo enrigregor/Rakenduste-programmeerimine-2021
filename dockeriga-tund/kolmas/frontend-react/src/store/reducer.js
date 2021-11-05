@@ -22,8 +22,9 @@ const postReducer = (state, action) => {
     case POSTS_UPDATE: 
         return {
           ...state,
-          data: state.data.assign(state.data.title, action.payload.title)
-          //data: action.payload.filter(state.data => state.data.id, ).assing(state.data, state.data.title)
+          data: [],
+          data: state.data.concat(action.payload)
+          //data: action.payload
         }
     default:
       return state
